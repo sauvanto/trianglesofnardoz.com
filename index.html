@@ -24,19 +24,66 @@
             height: 100vh;
             object-fit: cover;
             z-index: 1;
+            transition: opacity 0.5s ease-in-out; /* Smooth fade when switching */
         }
 
-        /* Places the text directly on top of the image */
+        /* Top Navigation Tabs Container */
+        .tabs-container {
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+            display: flex;
+            gap: 15px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 8px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Tab Buttons Styling */
+        .tab-btn {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            padding: 10px 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        /* Hover effect for unselected tabs */
+        .tab-btn:hover {
+            color: #ffffff;
+        }
+
+        /* Active/Selected Tab State */
+        .tab-btn.active {
+            background: rgba(0, 150, 255, 0.3);
+            color: #ffffff;
+            border: 1px solid rgba(0, 150, 255, 0.6);
+            box-shadow: 0 0 10px rgba(0, 150, 255, 0.4);
+        }
+
+        /* Foreground Content Layer */
         .text-overlay {
             position: relative;
             z-index: 2;
             width: 100%;
             height: 100%;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
+            box-sizing: border-box;
         }
 
+        /* The Prominent Title */
         h1 {
             color: #ffffff;
             font-size: 3.5rem;
@@ -48,22 +95,102 @@
             padding: 20px;
         }
 
+        /* Wikipedia Link Button */
+        .wiki-link {
+            position: absolute;
+            bottom: 40px;
+            display: inline-block;
+            padding: 12px 24px;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(0, 150, 255, 0.5);
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 150, 255, 0.2);
+        }
+
+        .wiki-link:hover {
+            background: rgba(0, 150, 255, 0.2);
+            border-color: rgba(0, 150, 255, 1);
+            box-shadow: 0 0 20px rgba(0, 150, 255, 0.6);
+            transform: translateY(-2px);
+        }
+
+        /* Mobile scaling adjustments */
         @media (max-width: 600px) {
             h1 {
                 font-size: 2rem;
                 letter-spacing: 2px;
+            }
+            .tabs-container {
+                top: 20px;
+                width: 90%;
+                justify-content: center;
+            }
+            .tab-btn {
+                padding: 8px 14px;
+                font-size: 0.75rem;
+            }
+            .wiki-link {
+                bottom: 30px;
+                padding: 10px 20px;
+                font-size: 0.8rem;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- Forcing the browser to fetch the image directly -->
-    <img src="image_xHTsqQ.png" alt="Background" class="bg-image">
+    <!-- Top Navigation Tabs -->
+    <div class="tabs-container">
+        <button id="classic-tab" class="tab-btn active" onclick="switchBackground('classic')">Classic</button>
+        <button id="advanced-tab" class="tab-btn" onclick="switchBackground('advanced')">Advanced Nardoz</button>
+    </div>
 
+    <!-- Background Image (Updated to background_image.png) -->
+    <img id="bg-img" src="background_image.png" alt="Background" class="bg-image">
+
+    <!-- Foreground Content Layer -->
     <div class="text-overlay">
         <h1>Triangles of Nardoz</h1>
+        
+        <!-- Wikipedia Button -->
+        <a href="https://wikipedia.org" target="_blank" class="wiki-link">
+            Learn More on Wikipedia
+        </a>
     </div>
+
+    <!-- Background Switching Logic -->
+    <script>
+        function switchBackground(mode) {
+            const bgImage = document.getElementById('bg-img');
+            const classicTab = document.getElementById('classic-tab');
+            const advancedTab = document.getElementById('advanced-tab');
+
+            // Quick fade out effect before swapping sources
+            bgImage.style.opacity = 0;
+
+            setTimeout(() => {
+                if (mode === 'classic') {
+                    bgImage.src = 'background_image.png'; // Updated here
+                    classicTab.classList.add('active');
+                    advancedTab.classList.remove('active');
+                } else if (mode === 'advanced') {
+                    bgImage.src = 'advanced_nardoz.png'; 
+                    advancedTab.classList.add('active');
+                    classicTab.classList.remove('active');
+                }
+                
+                // Fade back in once the image source changes
+                bgImage.style.opacity = 1;
+            }, 200);
+        }
+    </script>
 
 </body>
 </html>
