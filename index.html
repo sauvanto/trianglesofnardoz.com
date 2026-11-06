@@ -5,35 +5,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Triangles of Nardoz</title>
     <style>
-        body {
+        /* Prevents scrolling issues and clears margins */
+        html, body {
             margin: 0;
             padding: 0;
-            background-image: url('image_xHTsqQ.png');
+            width: 100%;
+            height: 100%;
+            font-family: 'Arial', sans-serif;
+            background-color: #0d0d0d; /* Dark fallback background */
+        }
+
+        /* The mobile-safe fixed background fix */
+        .bg-viewport {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('./image_xHTsqQ.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            background-attachment: fixed;
-            height: 100vh;
+            z-index: -1; /* Pushes the image behind the text */
+        }
+
+        /* Centers the title perfectly on the screen */
+        .content-container {
+            width: 100%;
+            height: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-family: 'Arial', sans-serif;
+            box-sizing: border-box;
+            padding: 20px;
         }
+
         h1 {
             color: #ffffff;
-            font-size: 4rem;
+            font-size: 3.5rem;
             text-transform: uppercase;
             letter-spacing: 4px;
             text-align: center;
-            text-shadow: 0 0 10px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 150, 255, 0.8);
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.9), 0 0 20px rgba(0, 150, 255, 0.8);
             margin: 0;
-            padding: 20px;
+        }
+
+        /* Makes the font scale down nicely on smaller mobile screens */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+                letter-spacing: 2px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <h1>Triangles of Nardoz</h1>
+    <!-- This div acts as the secure background layer -->
+    <div class="bg-viewport"></div>
+
+    <!-- This container keeps the text centered over the background -->
+    <div class="content-container">
+        <h1>Triangles of Nardoz</h1>
+    </div>
 
 </body>
 </html>
