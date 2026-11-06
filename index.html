@@ -15,16 +15,16 @@
             font-family: 'Arial', sans-serif;
         }
 
-        /* Forces the image to behave exactly like a background */
+        /* Scaled to display entirely on the screen without cropping */
         .bg-image {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            object-fit: cover;
+            object-fit: contain;
             z-index: 1;
-            transition: opacity 0.5s ease-in-out; /* Smooth fade when switching */
+            transition: opacity 0.5s ease-in-out;
         }
 
         /* Top Navigation Tabs Container */
@@ -57,12 +57,10 @@
             transition: all 0.3s ease;
         }
 
-        /* Hover effect for unselected tabs */
         .tab-btn:hover {
             color: #ffffff;
         }
 
-        /* Active/Selected Tab State */
         .tab-btn.active {
             background: rgba(0, 150, 255, 0.3);
             color: #ffffff;
@@ -81,9 +79,9 @@
             justify-content: center;
             align-items: center;
             box-sizing: border-box;
+            pointer-events: none;
         }
 
-        /* The Prominent Title */
         h1 {
             color: #ffffff;
             font-size: 3.5rem;
@@ -93,6 +91,7 @@
             text-shadow: 0 0 10px rgba(0, 0, 0, 0.9), 0 0 20px rgba(0, 150, 255, 0.8);
             margin: 0;
             padding: 20px;
+            pointer-events: auto;
         }
 
         /* Wikipedia Link Button */
@@ -112,6 +111,7 @@
             border-radius: 4px;
             transition: all 0.3s ease;
             box-shadow: 0 0 15px rgba(0, 150, 255, 0.2);
+            pointer-events: auto;
         }
 
         .wiki-link:hover {
@@ -121,7 +121,124 @@
             transform: translateY(-2px);
         }
 
-        /* Mobile scaling adjustments */
+        /* Clean Website Popup Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Modal Box Design */
+        .modal-box {
+            background: #121212;
+            border: 1px solid rgba(0, 150, 255, 0.4);
+            box-shadow: 0 0 30px rgba(0, 150, 255, 0.3);
+            border-radius: 12px;
+            padding: 30px;
+            width: 320px;
+            text-align: center;
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.show .modal-box {
+            transform: scale(1);
+        }
+
+        .modal-box h2 {
+            color: #ffffff;
+            margin-top: 0;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Clean Styled Password Inputs */
+        .modal-box input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin: 15px 0;
+            background: #1a1a1a;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            color: #ffffff;
+            font-size: 1rem;
+            box-sizing: border-box;
+            outline: none;
+            text-align: center;
+            transition: border-color 0.3s ease;
+        }
+
+        .modal-box input[type="password"]:focus {
+            border-color: rgba(0, 150, 255, 1);
+            box-shadow: 0 0 8px rgba(0, 150, 255, 0.4);
+        }
+
+        /* Inline Action Buttons */
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: space-between;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit {
+            background: rgba(0, 150, 255, 0.3);
+            border: 1px solid rgba(0, 150, 255, 0.7);
+            color: #ffffff;
+        }
+
+        .btn-submit:hover {
+            background: rgba(0, 150, 255, 0.6);
+            box-shadow: 0 0 10px rgba(0, 150, 255, 0.5);
+        }
+
+        .btn-cancel {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .btn-cancel:hover {
+            border-color: rgba(255, 255, 255, 0.5);
+            color: #ffffff;
+        }
+
+        /* Error Label Message */
+        #error-msg {
+            color: #ff4a4a;
+            font-size: 0.85rem;
+            margin-top: 10px;
+            min-height: 18px;
+        }
+
         @media (max-width: 600px) {
             h1 {
                 font-size: 2rem;
@@ -149,47 +266,90 @@
     <!-- Top Navigation Tabs -->
     <div class="tabs-container">
         <button id="classic-tab" class="tab-btn active" onclick="switchBackground('classic')">Classic</button>
-        <button id="advanced-tab" class="tab-btn" onclick="switchBackground('advanced')">Advanced Nardoz</button>
+        <button id="advanced-tab" class="tab-btn" onclick="openPopup()">Advanced Nardoz</button>
     </div>
 
-    <!-- Background Image (Updated to background_image.png) -->
+    <!-- Background Image -->
     <img id="bg-img" src="background_image.png" alt="Background" class="bg-image">
 
     <!-- Foreground Content Layer -->
     <div class="text-overlay">
         <h1>Triangles of Nardoz</h1>
         
-        <!-- Wikipedia Button -->
-        <a href="https://wikipedia.org" target="_blank" class="wiki-link">
+        <a href="https://en.wikipedia.org/wiki/Draft:The_Triangles_of_Nardoz#" target="_blank" class="wiki-link">
             Learn More on Wikipedia
         </a>
     </div>
 
-    <!-- Background Switching Logic -->
+    <!-- Custom Clean Web Popup Layer -->
+    <div id="password-modal" class="modal-overlay">
+        <div class="modal-box">
+            <h2>Access Restricted</h2>
+            <input type="password" id="pass-input" placeholder="Enter Password..." onkeydown="if(event.key === 'Enter') submitPassword()">
+            <div class="modal-actions">
+                <button class="modal-btn btn-cancel" onclick="closePopup()">Cancel</button>
+                <button class="modal-btn btn-submit" onclick="submitPassword()">Unlock</button>
+            </div>
+            <div id="error-msg"></div>
+        </div>
+    </div>
+
+    <!-- JavaScript Control Logic -->
     <script>
+        let currentMode = 'classic';
+        const modal = document.getElementById('password-modal');
+        const passInput = document.getElementById('pass-input');
+        const errorMsg = document.getElementById('error-msg');
+
+        function openPopup() {
+            if (currentMode === 'advanced') return;
+            errorMsg.innerText = "";
+            passInput.value = "";
+            modal.classList.add('show');
+            setTimeout(() => passInput.focus(), 100);
+        }
+
+        function closePopup() {
+            modal.classList.remove('show');
+        }
+
+        function submitPassword() {
+            if (passInput.value === "mickey_g69") {
+                closePopup();
+                switchBackground('advanced');
+            } else {
+                errorMsg.innerText = "Incorrect password. Access denied.";
+                passInput.value = "";
+                passInput.focus();
+            }
+        }
+
         function switchBackground(mode) {
             const bgImage = document.getElementById('bg-img');
             const classicTab = document.getElementById('classic-tab');
             const advancedTab = document.getElementById('advanced-tab');
 
-            // Quick fade out effect before swapping sources
             bgImage.style.opacity = 0;
 
             setTimeout(() => {
                 if (mode === 'classic') {
-                    bgImage.src = 'background_image.png'; // Updated here
+                    bgImage.src = 'background_image.png';
                     classicTab.classList.add('active');
                     advancedTab.classList.remove('active');
+                    currentMode = 'classic';
                 } else if (mode === 'advanced') {
                     bgImage.src = 'advanced_nardoz.png'; 
                     advancedTab.classList.add('active');
                     classicTab.classList.remove('active');
+                    currentMode = 'advanced';
                 }
-                
-                // Fade back in once the image source changes
                 bgImage.style.opacity = 1;
             }, 200);
         }
+
+        document.getElementById('classic-tab').addEventListener('click', function() {
+            switchBackground('classic');
+        });
     </script>
 
 </body>
